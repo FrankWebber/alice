@@ -1,9 +1,16 @@
 const express = require('express');
-const app = express();
-const port = process.env.PORT || 8081;
+const path = require('path');
 
-app.get('/', (req, res) => res.send('Server is running'));
+const app = express();
+const port = process.env.PORT || 8080;
+
+// Servir arquivos estáticos da pasta 'web-build' (diretório de saída da compilação do Expo)
+app.use(express.static(path.join(__dirname, 'web-build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'web-build', 'index.html'));
+});
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });
